@@ -23,6 +23,15 @@ conda create -n py27 python=2.7 ipykernel
 jupyter-add py27
 jupyter-add scistack
 
+###############
+# Add PyCharm #
+###############
+
+# (04.10.17)
+sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu $(lsb_release -sc)-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
+wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add
+sudo apt-get update
+sudo apt-get install pycharm
 
 ##################
 # R AND R-STUDIO #
