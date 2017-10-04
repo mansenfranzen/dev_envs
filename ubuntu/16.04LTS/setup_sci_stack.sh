@@ -3,7 +3,6 @@
 # Install required libraries for scientific stack.
 #
 
-
 ########################
 # INSTALL PYTHON/CONDA #
 ########################
@@ -18,8 +17,12 @@ conda config --add channels conda-forge
 
 # create jupyter envs
 conda create -n jupyter jupyter notebook
-conda create -n scistack pandas matplotlib bokeh seaborn scipy scikit-learn ipython ipykernel
+conda create -n scistack pandas matplotlib bokeh seaborn scipy scikit-learn ipykernel
+conda create -n py27 python=2.7 ipykernel
+
+jupyter-add py27
 jupyter-add scistack
+
 
 ##################
 # R AND R-STUDIO #
