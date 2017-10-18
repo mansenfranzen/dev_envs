@@ -23,15 +23,44 @@ conda create -n py27 python=2.7 ipykernel
 jupyter-add py27
 jupyter-add scistack
 
+###########
+# Add JDK #
+###########
+
+sudo apt-get install openjdk-8-jdk openjdk-8-demo openjdk-8-doc openjdk-8-jre-headless openjdk-8-source 
+
+#############
+# ADD SPARK #
+#############
+
+SPARK_VERSION="2.2.0"
+
+wget https://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION-bin-hadoop2.7.tgz
+sudo tar xf spark-$SPARK_VERSION-bin-hadoop2.7.tgz -C /opt/
+rm spark-$SPARK_VERSION-bin-hadoop2.7.tgz
+
+sudo ln -s /opt/spark-$SPARK_VERSION-bin-hadoop2.7 /opt/spark
+
+echo "
+# Add Spark links
+export SPARK_HOME=/opt/spark
+export PATH=$SPARK_HOME/bin:$PATH
+
+" >> ~/.bashrc
+
+
 ###############
 # Add PyCharm #
 ###############
 
-# (04.10.17)
-sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu $(lsb_release -sc)-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
-wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add
-sudo apt-get update
-sudo apt-get install pycharm
+PYCHARM_VERSION="2017.2.3"
+
+wget https://download.jetbrains.com/python/pycharm-community-$PYCHARM_VERSION.tar.gz # (17.10.2017)
+sudo tar xf pycharm-community-$PYCHARM_VERSION.tar.gz -C /opt/
+rm pycharm-community-$PYCHARM_VERSION.tar.gz
+
+# add symbolic link
+sudo ln -s /opt/pycharm-community-$PYCHARM_VERSION/bin/pycharm.sh /usr/bin/pycharm
 
 ##################
 # R AND R-STUDIO #
