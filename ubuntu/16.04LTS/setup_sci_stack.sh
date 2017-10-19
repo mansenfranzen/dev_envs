@@ -48,6 +48,56 @@ export PATH=$SPARK_HOME/bin:$PATH
 
 " >> ~/.bashrc
 
+################################################
+# Add Scistack Kernel with PySpark Integration #
+################################################
+
+PY4J_VERSION="0.10.4"
+
+# create ipython profile which contains spark setup script
+# which is run before kernel becomes available in jupyter
+
+$CONDA_ENV_PATH/scistack/bin/ipython profile create pyspark
+
+echo "
+import os
+import sys
+
+spark_home = '/opt/spark/'
+os.environ['SPARK_HOME'] = spark_home
+sys.path.insert(0, spark_home + '/python')
+sys.path.insert(0, os.path.join(spark_home, 'python/lib/py4j-$PY4J_VERSION-src.zip'))
+
+pyspark_submit_args = os.environ.get('PYSPARK_SUBMIT_ARGS', "")
+pyspark_submit_args += ' pyspark-shell'
+os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_submit_args
+
+filename = os.path.join(spark_home, 'python/pyspark/shell.py')
+exec(compile(open(filename, 'rb').read(), filename, 'exec'))
+" >> ~/.ipython/profile_pyspark/startup/setup_pyspark.py
+
+
+# add additional kernel configuration to jupyter which
+# references the scistack interpreter and pyspark profile
+
+mkdir ~/.local/share/jupyter/kernels/pyspark
+
+echo "
+{
+  \"display_name\": \"SciStackPySpark\",
+  \"language\": \"python\",
+  \"argv\": [
+    \"$CONDA_ENV_PATH/scistack/bin/python\",
+    \"-m\", \"ipykernel\",
+    \"--profile=pyspark\",
+    \"-f\", \"{connection_file}\"
+  ],
+  \"env\": {
+    \"PYSPARK_SUBMIT_ARGS\": \"\"
+  }
+}
+" >> ~/.local/share/jupyter/kernels/pyspark/kernel.json
+
 
 ###############
 # Add PyCharm #
