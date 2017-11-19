@@ -7,7 +7,7 @@
 # SETUP BASHRC #
 ################
 
-source setup_bashrc.sh
+cat setup_bashrc.sh >> ~/.bashrc
 source ~/.bashrc
 
 ####################
